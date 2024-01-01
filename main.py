@@ -1,22 +1,20 @@
-import os
 import openpyxl
 from openpyxl.styles import Font
 
-import sys
 import openai
 
 import streamlit as st
 from trymap import generate_google_maps_embed
 
+# import dotenv
+from dotenv import load_dotenv
+import os
+
 st.set_page_config(layout="wide")
 
-# Load API key from text file
-with open('api.txt', 'r') as f:
-    api_key = f.read().strip()
-
-# Set the API key
-openai.api_key = api_key
-
+# Load environment variables from .env
+load_dotenv()
+openai.api_key = os.getenv('API_KEY')
 
 def save_to_excel(text):
     import os
