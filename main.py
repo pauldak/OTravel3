@@ -6,15 +6,13 @@ import openai
 import streamlit as st
 from trymap import generate_google_maps_embed
 
-# import dotenv
-from dotenv import load_dotenv
-import os
 
 st.set_page_config(layout="wide")
 
-# Load environment variables from .env
-load_dotenv()
-openai.api_key = os.getenv('API_KEY')
+import os
+api_key = os.getenv("OPENAI_API_KEY")
+# Set the API key
+openai.api_key = api_key
 
 def save_to_excel(text):
     import os
