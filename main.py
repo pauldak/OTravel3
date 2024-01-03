@@ -14,6 +14,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 # Set the API key
 openai.api_key = api_key
 
+
 def save_to_excel(text):
     import os
 
@@ -131,30 +132,21 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
 
     # Call API
 
-    messages = [{"role": "system",
-                 "content": "As a trip agent, "}, {"role": "user", "content": user_message}]
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": f"Ask the model: '{user_message}' Answer:"},
+        ],
+        max_tokens=1000
+    )
 
-    # Append user input to the messages list
-
-    # Set max tokens
-    max_tokens = 1000
-
-    try:
-        st.echo("It may take a while")
-        # Create completion
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=messages,
-            max_tokens=max_tokens
-        )
-
-        itinerary = response.choices[0].message.content
-
-    except Exception as e:
-        st.echo("Error:", e)
+    # Extract the generated answer
+    itinerary = response['choices'][0]['message']['content'].strip()
 
     # Process and export itinerary
-    #                                      st.write(itinerary)
+
+    st.write(itinerary)
     save_to_excel(itinerary)
 
 
