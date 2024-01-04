@@ -21,7 +21,7 @@ def save_to_excel(text):
     import os
 
     # downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
-    os.chdir("/path/to/download"
+    os.chdir("/path/to/download")
 
     workbook = openpyxl.Workbook()
     sheet = workbook.active
