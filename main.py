@@ -10,15 +10,18 @@ from trymap import generate_google_maps_embed
 st.set_page_config(layout="wide")
 
 import os
-api_key = os.getenv("OPENAI_API_KEY")
+# api_key = os.getenv("OPENAI_API_KEY")
 # Set the API key
-openai.api_key = api_key
+# openai.api_key = api_key
+
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 
 def save_to_excel(text):
     import os
 
-    downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+    # downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+    os.chdir("/path/to/download"
 
     workbook = openpyxl.Workbook()
     sheet = workbook.active
@@ -53,7 +56,12 @@ def save_to_excel(text):
     sheet.column_dimensions['A'].width = 15
 
     # Save the modified Excel file
-    workbook.save(os.path.join(downloads_path, "itinerary.xlsx"))
+    import os
+
+
+    workbook.save("itinerary.xlsx")
+
+    # workbook.save(os.path.join(downloads_path, "itinerary.xlsx"))
 
 
 def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_days, start_date, selected_pois):
