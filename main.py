@@ -162,11 +162,11 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
     # Process and export itinerary
 
     # st.write(itinerary)
-    # save_to_excel(itinerary)
-    rows = itinerary.split("\n")
-    for i, row in enumerate(rows):
+    save_to_excel(itinerary)
+    # rows = itinerary.split("\n")
+    # for i, row in enumerate(rows):
         # st.write(row)
-        st.write(row, unsafe_allow_html=True)
+    #    st.write(row, unsafe_allow_html=True)
 
 
 st.title("Trip Planner")
@@ -217,4 +217,4 @@ if st.button("Enter Data"):
 
         # Call your generate_itinerary function with the collected data
         generate_itinerary(start_place, end_place, must_see, max_km, budget, num_days, start_date, selected_pois)
-        st.write("Your itinerary.xlsx is ready in your Downloads directory")
+        # st.write("Your itinerary.xlsx is ready in your Downloads directory")
