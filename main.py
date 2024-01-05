@@ -16,63 +16,67 @@ def save_to_excel(text):
     from io import BytesIO
     from flask import send_file
 
-    def save_to_excel(text):
+    buffer = BytesIO()
 
-        # Create in memory BytesIO buffer
-        buffer = BytesIO()
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
 
-        # Create new workbook
-        workbook = openpyxl.Workbook()
+    # Create in memory BytesIO buffer
+    buffer = BytesIO()
 
-        # Get active sheet
-        sheet = workbook.active
+    # Create new workbook
+    workbook = openpyxl.Workbook()
 
-        rows = text.split("\n")
-        for i, row in enumerate(rows):
-            cols = row.split(",")
-            for j, col in enumerate(cols):
-                sheet.cell(row=i + 1, column=j + 1).value = col
+    # Get active sheet
+    sheet = workbook.active
 
-        # Iterate over columns to find the maximum width of each column
+    rows = text.split("\n")
+    for i, row in enumerate(rows):
+        cols = row.split(",")
+        for j, col in enumerate(cols):
+            sheet.cell(row=i + 1, column=j + 1).value = col
 
-        for col_id, col in enumerate(sheet.columns, start=2):  # Start from the 2nd column
-            max_length = 0
-            column = [cell for cell in col]
-            for cell in column:
-                try:
-                    if len(str(cell.value)) > max_length:
-                        max_length = len(cell.value)
-                except:
-                    pass
-            adjusted_width = max_length
-            sheet.column_dimensions[col[0].column_letter].width = adjusted_width
+    # Iterate over columns to find the maximum width of each column
 
-        blue_font = Font(color="0000FF")
-        link_row = len(rows)
-        sheet["A" + str(link_row)].font = blue_font
+    for col_id, col in enumerate(sheet.columns, start=2):  # Start from the 2nd column
+        max_length = 0
+        column = [cell for cell in col]
+        for cell in column:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = max_length
+        sheet.column_dimensions[col[0].column_letter].width = adjusted_width
 
-        # Adjust the 1st column to a fixed width of 8
-        sheet.column_dimensions['A'].width = 15
+    blue_font = Font(color="0000FF")
+    link_row = len(rows)
+    sheet["A" + str(link_row)].font = blue_font
 
-        # Save the modified Excel file
+    # Adjust the 1st column to a fixed width of 8
+    sheet.column_dimensions['A'].width = 15
 
-        # Save Excel file on server
+    # Save the modified Excel file
 
-        # Save workbook to temporary file
-        workbook.save(buffer)
+    # Save Excel file on server
 
-        # Rewind buffer to start
-        buffer.seek(0)
+    # Save workbook to temporary file
+    workbook.save(buffer)
 
-        # Send buffer as an attachment style response
-        return send_file(
-            buffer,
-            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            as_attachment=True,
-            attachment_filename='report.xlsx'
-        )
+    buffer.seek(0)
 
-        st.write("Your file sample.xlsx is ready")
+    response = send_file(
+        buffer,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    response.headers['Content-Disposition'] = 'attachment; filename=report.xlsx'
+    st.write("Your file sample.xlsx is ready")
+
+    return response
+
+
 
 def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_days, start_date, selected_pois):
     # Validate
