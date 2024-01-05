@@ -162,7 +162,7 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
     # Process and export itinerary
 
     st.write(itinerary)
-    save_to_excel(itinerary)
+    # save_to_excel(itinerary)
 
 
 st.title("Trip Planner")
