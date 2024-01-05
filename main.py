@@ -14,6 +14,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 def save_to_excel(text):
     import tempfile
     import os
+    import shutil
 
     with tempfile.TemporaryDirectory() as tmp_dir:
 
@@ -58,7 +59,8 @@ def save_to_excel(text):
 
         # Save workbook to temporary file
         workbook.save(tmp_file)
-
+        # Copy file to current directory to persist after context manager exits
+        shutil.copy(tmp_file, "sample.xlsx")
 
 def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_days, start_date, selected_pois):
     # Validate
