@@ -12,21 +12,14 @@ st.set_page_config(layout="wide")
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def save_to_excel(text):
-    import tempfile
-    import os
-    import shutil
+    import openpyxl
+    from io import BytesIO
+    from flask import send_file
 
-    final_dir = '/home/user/spreadsheets'
-    if not os.path.exists(final_dir):
-        os.makedirs(final_dir)
+    def save_to_excel(text):
 
-    final_file = os.path.join(final_dir, 'final.xlsx')
-
-    st.write("Final file path:", final_file)
-
-    with tempfile.TemporaryDirectory() as tmp_dir:
-
-        tmp_file = os.path.join(tmp_dir, "sample.xlsx")
+        # Create in memory BytesIO buffer
+        buffer = BytesIO()
 
         # Create new workbook
         workbook = openpyxl.Workbook()
@@ -66,13 +59,18 @@ def save_to_excel(text):
         # Save Excel file on server
 
         # Save workbook to temporary file
-        workbook.save(tmp_file)
-        # Copy file to current directory to persist after context manager exits
+        workbook.save(buffer)
 
-        try:
-            shutil.copy(tmp_file, final_file)
-        except FileNotFoundError as e:
-            print("Error copying file:", e)
+        # Rewind buffer to start
+        buffer.seek(0)
+
+        # Send buffer as an attachment style response
+        return send_file(
+            buffer,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            attachment_filename='report.xlsx'
+        )
 
         st.write("Your file sample.xlsx is ready")
 
