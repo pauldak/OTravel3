@@ -9,22 +9,14 @@ from trymap import generate_google_maps_embed
 
 st.set_page_config(layout="wide")
 
-import os
-# api_key = os.getenv("OPENAI_API_KEY")
-# Set the API key
-# openai.api_key = api_key
-
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def save_to_excel(text):
-    import os
+    import openpyxl
     import tempfile
-    # downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
 
     workbook = openpyxl.Workbook()
     sheet = workbook.active
-
-    # st.write(text)
 
     rows = text.split("\n")
     for i, row in enumerate(rows):
