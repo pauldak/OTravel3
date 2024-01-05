@@ -12,64 +12,53 @@ st.set_page_config(layout="wide")
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def save_to_excel(text):
-
-    import tempfile2 as tempfile
-
-    workbook = openpyxl.Workbook()
-    sheet = workbook.active
-
-    rows = text.split("\n")
-    for i, row in enumerate(rows):
-        cols = row.split(",")
-        for j, col in enumerate(cols):
-            sheet.cell(row=i + 1, column=j + 1).value = col
-
-    # Iterate over columns to find the maximum width of each column
-
-    for col_id, col in enumerate(sheet.columns, start=2):  # Start from the 2nd column
-        max_length = 0
-        column = [cell for cell in col]
-        for cell in column:
-            try:
-                if len(str(cell.value)) > max_length:
-                    max_length = len(cell.value)
-            except:
-                pass
-        adjusted_width = max_length
-        sheet.column_dimensions[col[0].column_letter].width = adjusted_width
-
-    blue_font = Font(color="0000FF")
-    link_row = len(rows)
-    sheet["A" + str(link_row)].font = blue_font
-
-    # Adjust the 1st column to a fixed width of 8
-    sheet.column_dimensions['A'].width = 15
-
-    # Save the modified Excel file
+    import tempfile
     import os
 
-    # Save Excel file on server
+    with tempfile.TemporaryDirectory() as tmp_dir:
 
-    tmp_dir = tempfile.gettempdir()
+        tmp_file = os.path.join(tmp_dir, "sample.xlsx")
 
-    file_path = os.path.join(tmp_dir, 'report.xlsx')
-    workbook.save(file_path)
+        # Create new workbook
+        workbook = openpyxl.Workbook()
 
-    # Output HTML with download link
+        # Get active sheet
+        sheet = workbook.active
 
-    print("""
-    <html>
+        rows = text.split("\n")
+        for i, row in enumerate(rows):
+            cols = row.split(",")
+            for j, col in enumerate(cols):
+                sheet.cell(row=i + 1, column=j + 1).value = col
 
-    <body>
+        # Iterate over columns to find the maximum width of each column
 
-    <p>Your Excel report has been generated.</p>
+        for col_id, col in enumerate(sheet.columns, start=2):  # Start from the 2nd column
+            max_length = 0
+            column = [cell for cell in col]
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(cell.value)
+                except:
+                    pass
+            adjusted_width = max_length
+            sheet.column_dimensions[col[0].column_letter].width = adjusted_width
 
-    <a href="report.xlsx" download>Download Report</a>
+        blue_font = Font(color="0000FF")
+        link_row = len(rows)
+        sheet["A" + str(link_row)].font = blue_font
 
-    </body>
+        # Adjust the 1st column to a fixed width of 8
+        sheet.column_dimensions['A'].width = 15
 
-    </html>
-    """)
+        # Save the modified Excel file
+
+        # Save Excel file on server
+
+        # Save workbook to temporary file
+        workbook.save(tmp_file)
+
 
 def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_days, start_date, selected_pois):
     # Validate
