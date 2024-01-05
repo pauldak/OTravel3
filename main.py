@@ -16,7 +16,13 @@ def save_to_excel(text):
     import os
     import shutil
 
-    final_file = '/home/user/spreadsheets/final.xlsx'
+    final_dir = '/home/user/spreadsheets'
+    if not os.path.exists(final_dir):
+        os.makedirs(final_dir)
+
+    final_file = os.path.join(final_dir, 'final.xlsx')
+
+    st.write("Final file path:", final_file)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
 
@@ -62,7 +68,12 @@ def save_to_excel(text):
         # Save workbook to temporary file
         workbook.save(tmp_file)
         # Copy file to current directory to persist after context manager exits
-        shutil.copy(tmp_file, final_file)
+
+        try:
+            shutil.copy(tmp_file, final_file)
+        except FileNotFoundError as e:
+            print("Error copying file:", e)
+
         st.write("Your file sample.xlsx is ready")
 
 def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_days, start_date, selected_pois):
