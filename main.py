@@ -16,12 +16,10 @@ import os
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-
 def save_to_excel(text):
     import os
-
+    import tempfile
     # downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
-    os.chdir("/path/to/download")
 
     workbook = openpyxl.Workbook()
     sheet = workbook.active
@@ -58,11 +56,27 @@ def save_to_excel(text):
     # Save the modified Excel file
     import os
 
+    # Save Excel file on server
 
-    workbook.save("itinerary.xlsx")
+    tmp_dir = tempfile.gettempdir()
+    file_path = os.path.join(tmp_dir, 'report.xlsx')
+    workbook.save(file_path)
 
-    # workbook.save(os.path.join(downloads_path, "itinerary.xlsx"))
+    # Output HTML with download link
 
+    print("""
+    <html>
+
+    <body>
+
+    <p>Your Excel report has been generated.</p>
+
+    <a href="report.xlsx" download>Download Report</a>
+
+    </body>
+
+    </html>
+    """)
 
 def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_days, start_date, selected_pois):
     # Validate
