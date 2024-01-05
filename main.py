@@ -15,6 +15,7 @@ def save_to_excel(text):
     import openpyxl
     from io import BytesIO
     from flask import send_file
+    from flask import request
 
     buffer = BytesIO()
 
@@ -66,12 +67,16 @@ def save_to_excel(text):
 
     buffer.seek(0)
 
+    env = request.environ  # Get request environment
+
     response = send_file(
         buffer,
-        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        environ=env,  # Pass environment
+        mimetype='...'
     )
 
     response.headers['Content-Disposition'] = 'attachment; filename=report.xlsx'
+
     st.write("Your file sample.xlsx is ready")
 
     return response
