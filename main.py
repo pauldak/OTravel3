@@ -20,7 +20,7 @@ def save_to_excel(text):
 
     rows = text.split("\n")
     for i, row in enumerate(rows):
-        cols = row.split(";")
+        cols = row.split(",")
         for j, col in enumerate(cols):
             sheet.cell(row=i + 1, column=j + 1).value = col
 
@@ -128,10 +128,10 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
                      "DO NOT add any additional commas to the sites names. ")
     user_message += "Hotel name (call the column 'Hotel'). "
     user_message += "Budget (call the column 'Budget').  "
-    user_message += "SEPARATE between columns with a ';' "
+    user_message += "SEPARATE between columns with a ',' "
 
-    user_message += ("I also need that the first line of the table will be: Day; Way; km;"
-                     " morning; afternoon; Hotel; Budget ")
+    user_message += ("I also need that the first line of the table will be: Day, Way, km,"
+                     " morning, afternoon, Hotel, Budget ")
     user_message += ("At the end of the table, please give me the itinerary in Google Maps format"
                      " with Hyper link and with blue color, "
                      "starts with '=HYPERLINK(")
