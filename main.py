@@ -14,19 +14,12 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 def save_to_excel(text):
     import openpyxl
     from io import BytesIO
-    from flask import send_file
-    from flask import request
 
-    buffer = BytesIO()
 
     workbook = openpyxl.Workbook()
-    sheet = workbook.active
 
     # Create in memory BytesIO buffer
     buffer = BytesIO()
-
-    # Create new workbook
-    workbook = openpyxl.Workbook()
 
     # Get active sheet
     sheet = workbook.active
@@ -58,28 +51,20 @@ def save_to_excel(text):
     # Adjust the 1st column to a fixed width of 8
     sheet.column_dimensions['A'].width = 15
 
-    # Save the modified Excel file
 
     # Save Excel file on server
 
-    # Save workbook to temporary file
     workbook.save(buffer)
-
     buffer.seek(0)
-
-    env = request.environ  # Get request environment
-
-    response = send_file(
-        buffer,
-        environ=env,  # Pass environment
-        mimetype='...'
+    st.download_button(
+        label="Download Excel Report",
+        data=buffer,
+        file_name="report.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
-
-    response.headers['Content-Disposition'] = 'attachment; filename=report.xlsx'
-
     st.write("Your file sample.xlsx is ready")
 
-    return response
+    # return response
 
 
 
