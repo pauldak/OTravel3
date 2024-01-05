@@ -12,8 +12,8 @@ st.set_page_config(layout="wide")
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def save_to_excel(text):
-    import openpyxl
-    import tempfile
+
+    import tempfile2 as tempfile
 
     workbook = openpyxl.Workbook()
     sheet = workbook.active
@@ -51,6 +51,7 @@ def save_to_excel(text):
     # Save Excel file on server
 
     tmp_dir = tempfile.gettempdir()
+
     file_path = os.path.join(tmp_dir, 'report.xlsx')
     workbook.save(file_path)
 
