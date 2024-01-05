@@ -165,7 +165,8 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
     # save_to_excel(itinerary)
     rows = itinerary.split("\n")
     for i, row in enumerate(rows):
-        st.write(row)
+        # st.write(row)
+        st.write(row, unsafe_allow_html=True)
 
 
 st.title("Trip Planner")
