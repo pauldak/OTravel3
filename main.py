@@ -62,7 +62,7 @@ def save_to_excel(text):
         file_name="report.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
-    st.write("Your file sample.xlsx is ready")
+    # st.write("Your file sample.xlsx is ready")
 
     # return response
 
@@ -138,7 +138,7 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
 
     user_message += (" for each city In the Google Maps format, add its country after the city, "
                      "with a '+' between them. "
-                     "Pls don't add anything to this link ")
+                     "Pls don't add anything to this link, not before and not after ")
 
     # st.write(user_message)
 
@@ -158,7 +158,7 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
 
     # Process and export itinerary
 
-    # st.write(itinerary)
+    st.write(itinerary)
     save_to_excel(itinerary)
     # rows = itinerary.split("\n")
     # for i, row in enumerate(rows):
