@@ -56,7 +56,7 @@ def save_to_excel(text, start_place, end_place):
 
     workbook.save(buffer)
     buffer.seek(0)
-    file_name = f'Itinerary {start_place} to  {end_place}.xlsx '
+    file_name = f'Itinerary {start_place} to {end_place}.xlsx'
     st.download_button(
         label="Download Excel Report",
         data=buffer,
