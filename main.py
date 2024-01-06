@@ -11,7 +11,7 @@ st.set_page_config(layout="wide")
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-def save_to_excel(text):
+def save_to_excel(text, start_place, end_place):
     import openpyxl
     from io import BytesIO
 
@@ -56,10 +56,11 @@ def save_to_excel(text):
 
     workbook.save(buffer)
     buffer.seek(0)
+    file_name = "Itinerary {start_place} to + {end_place} "
     st.download_button(
         label="Download Excel Report",
         data=buffer,
-        file_name="report.xlsx",
+        file_name=file_name,
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
     # st.write("Your file sample.xlsx is ready")
@@ -158,8 +159,8 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
 
     # Process and export itinerary
 
-    st.write(itinerary)
-    save_to_excel(itinerary)
+    # st.write(itinerary)
+    save_to_excel(itinerary, start_place, end_place)
     # rows = itinerary.split("\n")
     # for i, row in enumerate(rows):
         # st.write(row)
