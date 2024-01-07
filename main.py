@@ -80,56 +80,60 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
     st.echo(my_pois_list)
     num_of_columns = "7"
 
-    user_message = "Generate a table with the following: Plan an itinerary for my upcoming trip  "
+    user_message = "Generate a table with the following: Plan an itinerary for my upcoming trip:\n"
     round_trip = start_place == end_place
     if round_trip:
-        user_message += f', I want to have a round trip  by car. start at  {start_place}  and end at {start_place}'
+        user_message += f', I want to have a round trip  by car. start at  {start_place}  and end at {start_place}\n'
     else:
         user_message += f'from {start_place} to {end_place} by car. '
-        user_message += f'I do not want to come back to {start_place} at the end of the trip. '
+        user_message += f'I do not want to come back to {start_place} at the end of the trip.\n '
 
     if len(must_see) > 2:
         user_message += f'At some point during the trip, I must see {must_see} . Not necessarily in the same order. '
-        user_message += "You may add additional POIs that you think I might like. "
-    user_message += "Please OMIT any introductory lines or prefix. "
-    user_message += "I want to get an itinerary that follow the next rules: "
-    user_message += "You can choose the itinerary that you think is the best for me. "
-    user_message += "I don't want to arrive to the same place twice, unless it is at the last day of a round trip. "
-    user_message += f'The trip will start on {str(start_date)}  . '
-    user_message += f'The trip is going to last {str(num_days)} days '
-    user_message += f'I do not want to drive more than  {str(max_km)} kilometers per day-This is a MUST! '
+        user_message += "You may add additional POIs that you think I might like.\n "
+    user_message += "Please OMIT any introductory lines or prefix.\n "
+    user_message += "I want to get an itinerary that follow the next rules: \n"
+    user_message += "- You can choose the itinerary that you think is the best for me. \n"
+    user_message += "- I don't want to arrive to the same place twice, unless it is at the last day of a round trip. \n"
+    user_message += f'- The trip will start on {str(start_date)}  . \n'
+    user_message += f'- The trip is going to last {str(num_days)} days \n'
+    user_message += (f'- It is imperative that I do not drive more than  {str(max_km)} kilometers on any given day'
+                     f'-This is a MUST! \n')
+    user_message += (f'"- Please distribute driving distances and activities evenly across the days of the trip, '
+                     f'avoiding excessive driving on any single day.\n ')
     if my_pois_list:
-        user_message += f' My favorites POIs are:  {str(my_pois_list)} . '
+        user_message += f'- My favorites POIs are:  {str(my_pois_list)} .\n '
 
-    user_message += f'I do not want to visit in {start_place} . '
-    user_message += ("I want to visit 3 or 4 sites every day, total time around 5 to 7 hours per day "
-                     "(Depending on the average spending time in each site). ")
-    user_message += "if there are some POIs on the way, I would like to visit them as well. "
-    user_message += (f'"Accommodations with a budget not exceeding {str(budget)} dollars per night, '
+    user_message += f'- I do not want to visit in {start_place} . \n'
+    user_message += ("- I want to visit 3 or 4 sites every day, total time around 5 to 7 hours per day "
+                     "(Depending on the average spending time in each site). \n")
+    user_message += "- if there are some POIs on the way, I would like to visit them as well.\n "
+    user_message += (f'"- Accommodations with a budget not exceeding {str(budget)} dollars per night, '
                      f'I seek comfortable and welcoming hotel stays"that are rated at least 4.5 stars. ')
-    user_message += "Please check the availability of the hotels before you add them to the itinerary. "
-    user_message += "Provide distinct itinerary for each day of the journey. The lines of the table are for the days, "
+    user_message += "- Please check the availability of the hotels before you add them to the itinerary.\n "
+    user_message += ("- Provide distinct itinerary for each day of the journey. "
+                     "The lines of the table are for the days, \n")
     user_message += "(please separate between the days with a" + r'''\n).'''
     user_message += f'The columns (" {str(num_of_columns)} ) are: '
-    user_message += "Day date (call the column 'Day'). "
-    user_message += "Driving from and driving to (in the same row, separate them with ' to ') (call the column 'Way') "
-    user_message += ("If we stay in same place DON'T add anything, just write the name of the place, "
-                     "without any character or word before or after. ")
-    user_message += "Actual Driving distance (call the column 'km'). "
-    user_message += "What to do in the morning (with average time in each site) (call the column 'morning') "
+    user_message += "- Day date (call the column 'Day'). \n"
+    user_message += "- Driving from and driving to (in the same row, separate them with ' to ') (call the column 'Way')\n "
+    user_message += ("- If we stay in same place DON'T add anything, just write the name of the place, "
+                     "refrain from including any character or word before or after.\n ")
+    user_message += "- Actual Driving distance (call the column 'km').\n "
+    user_message += "- What to do in the morning (with average time in each site) (call the column 'morning') "
     user_message += "if the average time is not integer, round it to the nearest integer. "
     user_message += ("if there are more than one thing to do in the morning, separate them with a '|'. "
-                     "DO NOT add any additional commas to the sites names. ")
-    user_message += "What to do in the afternoon (with average time in each site) (call the column 'afternoon') "
+                     "Refrain from including any additional commas to the sites names. \n")
+    user_message += "- What to do in the afternoon (with average time in each site) (call the column 'afternoon') "
     user_message += "if the average time is not integer, round it up to the nearest integer. "
     user_message += ("if there are more than one thing to do in the afternoon, separate them with a '|'. "
-                     "DO NOT add any additional commas to the sites names. ")
-    user_message += "Hotel name (call the column 'Hotel'). "
-    user_message += "Budget (call the column 'Budget').  "
-    user_message += "SEPARATE between columns with a ',' "
+                     "Refrain from including any additional commas to the sites names. \n")
+    user_message += "- Hotel name (call the column 'Hotel'). \n"
+    user_message += "- Budget (call the column 'Budget'). \n "
+    user_message += "SEPARATE between columns with a ',' \n"
 
     user_message += ("I also need that the first line of the table will be: Day, Way, km,"
-                     " morning, afternoon, Hotel, Budget ")
+                     " morning, afternoon, Hotel, Budget \n")
     user_message += ("At the end of the table, please give me the itinerary in Google Maps format"
                      " with Hyper link and with blue color, "
                      "starts with '=HYPERLINK(")
