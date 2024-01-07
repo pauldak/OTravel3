@@ -80,66 +80,54 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
     st.echo(my_pois_list)
     num_of_columns = "7"
 
-    user_message = "Generate a table with the following: Plan an itinerary for my upcoming trip  "
-    round_trip = start_place == end_place
-    if round_trip:
-        user_message += f', I want to have a round trip  by car. start at  {start_place}  and end at {start_place}'
+    user_message = "Generate a table with the following itinerary for my upcoming trip:\n"
+
+    if start_place == end_place:
+        user_message += f"- Round trip by car starting and ending at {start_place}\n"
     else:
-        user_message += f'from {start_place} to {end_place} by car. '
-        user_message += f'I do not want to come back to {start_place} at the end of the trip. '
+        user_message += f"- Car trip from {start_place} to {end_place}\n"
+        user_message += f"- Do not return to {start_place} at the end of the trip\n"
 
     if len(must_see) > 2:
-        user_message += f'At some point during the trip, I must see {must_see} . Not necessarily in the same order. '
-        user_message += "You may add additional POIs that you think I might like. "
-    user_message += "Please OMIT any introductory lines or prefix. "
-    user_message += "I want to get an itinerary that follow the next rules: "
-    user_message += "You can choose the itinerary that you think is the best for me. "
-    user_message += "I don't want to arrive to the same place twice, unless it is at the last day of a round trip. "
-    user_message += f'The trip will start on {str(start_date)}  . '
-    user_message += f'The trip is going to last {str(num_days)} days '
-    user_message += f'I do not want to drive more than  {str(max_km)} kilometers per day-This is a MUST! '
+        user_message += f"- Must-see locations during the trip: {must_see} (not necessarily in the same order)\n"
+        user_message += "- You may add additional points of interest that you think I might like\n"
+
+    user_message += "- Please omit any introductory lines or prefixes\n"
+    user_message += "- I want an itinerary that follows these rules:\n"
+    user_message += "  - You can choose the best itinerary for me\n"
+    user_message += "  - I don't want to visit the same place twice unless it's the last day of a round trip\n"
+    user_message += f"- The trip will start on {str(start_date)} and last {str(num_days)} days\n"
+    user_message += f"- It is imperative that I do not drive more than {str(max_km)} kilometers on any given day\n"
+    user_message += ("Please distribute driving distances and activities evenly across the days of the trip, "
+                     "avoiding excessive driving on any single day.\n")
     if my_pois_list:
-        user_message += f' My favorites POIs are:  {str(my_pois_list)} . '
+        user_message += f"- My favorite points of interest are: {str(my_pois_list)}\n"
 
-    user_message += f'I do not want to visit in {start_place} . '
-    user_message += ("I want to visit 3 or 4 sites every day, total time around 5 to 7 hours per day "
-                     "(Depending on the average spending time in each site). ")
-    user_message += "if there are some POIs on the way, I would like to visit them as well. "
-    user_message += (f'"Accommodations with a budget not exceeding {str(budget)} dollars per night, '
-                     f'I seek comfortable and welcoming hotel stays"that are rated at least 4.5 stars. ')
-    user_message += "Please check the availability of the hotels before you add them to the itinerary. "
-    user_message += "Provide distinct itinerary for each day of the journey. The lines of the table are for the days, "
-    user_message += "(please separate between the days with a" + r'''\n).'''
-    user_message += f'The columns (" {str(num_of_columns)} ) are: '
-    user_message += "Day date (call the column 'Day'). "
-    user_message += "Driving from and driving to (in the same row, separate them with ' to ') (call the column 'Way') "
-    user_message += ("If we stay in same place DON'T add anything, just write the name of the place, "
-                     "without any character or word before or after. ")
-    user_message += "Actual Driving distance (call the column 'km'). "
-    user_message += "What to do in the morning (with average time in each site) (call the column 'morning') "
-    user_message += "if the average time is not integer, round it to the nearest integer. "
-    user_message += ("if there are more than one thing to do in the morning, separate them with a '|'. "
-                     "DO NOT add any additional commas to the sites names. ")
-    user_message += "What to do in the afternoon (with average time in each site) (call the column 'afternoon') "
-    user_message += "if the average time is not integer, round it up to the nearest integer. "
-    user_message += ("if there are more than one thing to do in the afternoon, separate them with a '|'. "
-                     "DO NOT add any additional commas to the sites names. ")
-    user_message += "Hotel name (call the column 'Hotel'). "
-    user_message += "Budget (call the column 'Budget').  "
-    user_message += "SEPARATE between columns with a ',' "
+    user_message += f"- I do not want to visit {start_place}\n"
+    user_message += "- I want to visit 3 or 4 sites every day, with a total time of around 5 to 7 hours per day\n"
+    user_message += "- If there are some points of interest on the way, I would like to visit them as well\n"
+    user_message += f'- Accommodations with a budget not exceeding {str(budget)} dollars per night, rated at least 4.5 stars\n'
+    user_message += "- Please check the availability of the hotels before adding them to the itinerary\n"
 
-    user_message += ("I also need that the first line of the table will be: Day, Way, km,"
-                     " morning, afternoon, Hotel, Budget ")
-    user_message += ("At the end of the table, please give me the itinerary in Google Maps format"
-                     " with Hyper link and with blue color, "
-                     "starts with '=HYPERLINK(")
+    user_message += "The table should have the following columns:\n"
+    user_message += "- Day date (column name: 'Day')\n"
+    user_message += "- Driving from and driving to (in the same row, separate them with ' to ') (column name: 'Way')\n"
+    user_message += "- Actual driving distance in kilometers (column name: 'km')\n"
+    user_message += "- Morning activities with average time in each site (column name: 'morning')\n"
+    user_message += "- Afternoon activities with average time in each site (column name: 'afternoon')\n"
+    user_message += "- Hotel name (column name: 'Hotel')\n"
+    user_message += "- Budget (column name: 'Budget')\n"
 
-    hyper_str = "https://www.google.com/maps/dir/'"
-    user_message = f'{user_message}"{hyper_str}'
+    user_message += "Separate the columns with a comma ','\n"
+    user_message += "The first line of the table should be: Day, Way, km, morning, afternoon, Hotel, Budget\n"
 
-    user_message += (" for each city In the Google Maps format, add its country after the city, "
-                     "with a '+' between them. "
-                     "Pls don't add anything to this link, not before and not after ")
+    user_message += "At the end of the table, please provide the itinerary in Google Maps format with a hyperlink. "
+    user_message += ("The hyperlink should start with '=HYPERLINK(https://www.google.com/maps/dir/' "
+                     "followed by the cities. ")
+    user_message += "for each city add the country after the city name with a '+' between them. "
+    user_message += ("I kindly request that you refrain from including any unprompted phrases"
+                     " or introductions in the generated itinerary., "
+                     "and don't forget to add ')' at the end of the link.\n")
 
     # st.write(user_message)
 
