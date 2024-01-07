@@ -139,7 +139,7 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
 
     user_message += (" for each city In the Google Maps format, add its country after the city, "
                      "with a '+' between them. "
-                     "Pls don't add anything to this link, not before and not after ")
+                     "Pls refrain from including anything to this link, not before and not after ")
 
     # st.write(user_message)
 
@@ -159,13 +159,8 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
 
     # Process and export itinerary
 
-    # st.write(itinerary)
+    st.write(itinerary)
     save_to_excel(itinerary, start_place, end_place)
-    # rows = itinerary.split("\n")
-    # for i, row in enumerate(rows):
-        # st.write(row)
-    #    st.write(row, unsafe_allow_html=True)
-
 
 st.title("Trip Planner")
 
