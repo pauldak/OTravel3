@@ -82,7 +82,8 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
 
     user_message = "Generate a table with the following itinerary for my upcoming trip:\n"
 
-    if start_place == end_place:
+    round_trip = start_place == end_place
+    if round_trip:
         user_message += f"- Round trip by car starting and ending at {start_place}\n"
     else:
         user_message += f"- Car trip from {start_place} to {end_place}\n"
@@ -103,7 +104,9 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
     if my_pois_list:
         user_message += f"- My favorite points of interest are: {str(my_pois_list)}\n"
 
-    user_message += f"- I do not want to visit {start_place}\n"
+    user_message += f"- I do not want to visit {start_place} \n"
+    if not round_trip:
+        user_message += f"- I do not want to return to {start_place} \n"
     user_message += "- I want to visit 3 or 4 sites every day, with a total time of around 5 to 7 hours per day\n"
     user_message += "- If there are some points of interest on the way, I would like to visit them as well\n"
     user_message += f'- Accommodations with a budget not exceeding {str(budget)} dollars per night, rated at least 4.5 stars\n'
@@ -147,7 +150,7 @@ def generate_itinerary(start_place, end_place, must_see, max_km, budget, num_day
 
     # Process and export itinerary
 
-    # st.write(itinerary)
+    st.write(itinerary)
     save_to_excel(itinerary, start_place, end_place)
     # rows = itinerary.split("\n")
     # for i, row in enumerate(rows):
